@@ -1,0 +1,15 @@
+{
+  "name": "RS-Reminder",
+  "short_name": "RS-Reminder",
+  "icons": [
+    {
+      "src": "rs-reminder-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "rs-reminder.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2c7be5"
+}
