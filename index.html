@@ -227,12 +227,31 @@ document.getElementById('enableNotif').addEventListener('click', () => {
   });
 });
 
+function playBeep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    gain.gain.setValueAtTime(0.6, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 1.2);
+  } catch(e) {
+    console.log('Audio not available', e);
+  }
+}
+
 function scheduleNotification(r) {
   if (!('Notification' in window) || Notification.permission !== 'granted') return;
   const fireAt = new Date(`${r.date}T${r.time}:00`).getTime();
   const delay = fireAt - Date.now();
   if (delay <= 0) return;
   setTimeout(() => {
+    playBeep();
     new Notification('RS-Reminder', {
       body: r.text,
       icon: 'rs-reminder-icon.png'
