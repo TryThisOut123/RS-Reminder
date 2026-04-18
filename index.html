@@ -120,9 +120,14 @@ function todayISO() {
 }
 function nextSlot() {
   const now = new Date();
-  const mins = now.getMinutes() < 30 ? 30 : 0;
-  const hrs  = now.getMinutes() < 30 ? now.getHours() : (now.getHours()+1) % 24;
-  return `${String(hrs).padStart(2,'0')}:${mins===0?'00':'30'}`;
+  const intervals = [0, 15, 30, 45];
+  const next = intervals.find(m => m > now.getMinutes());
+  if (next !== undefined) {
+    return `${String(now.getHours()).padStart(2,'0')}:${String(next).padStart(2,'0')}`;
+  } else {
+    const nextHour = (now.getHours() + 1) % 24;
+    return `${String(nextHour).padStart(2,'0')}:00`;
+  }
 }
 document.getElementById('dateInput').value = todayISO();
 timeSelect.value = nextSlot();
